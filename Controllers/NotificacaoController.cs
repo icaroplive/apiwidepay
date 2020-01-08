@@ -43,7 +43,7 @@ namespace api_widepay.Controllers {
 
         [HttpPost]
         [Route ("api/notificacao")]
-        public fin_movimento Post ([FromBody] PayLoadNotificacao payload) {
+        public fin_movimento Post ([FromForm] PayLoadNotificacao payload) {
             fin_movimento fin = new fin_movimento ();
             var not = _cob.consultarNotificacao (payload.notificacao);
             if (not.Result.cobranca.status == "Recebido") {
