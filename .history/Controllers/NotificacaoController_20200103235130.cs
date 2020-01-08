@@ -1,0 +1,44 @@
+using System.Threading.Tasks;
+using api_widepay.Interfaces;
+using api_widepay.Models;
+using api_widepay.Models.Retorno;
+using api_widepay.Models.WidePay;
+using Microsoft.AspNetCore.Mvc;
+
+namespace api_widepay.Controllers {
+    // [Route ("api/[controller]")]
+    [ApiController]
+    public class NotificacaoController : ControllerBase {
+        private IMysql _mysql;
+        private IWidePay _cob;
+        public NotificacaoController (IMysql mysql, IWidePay cob) {
+            _mysql = mysql;
+            _cob = cob;
+        }
+
+        [Route ("api/notificacao/{id}")]
+        //[HttpGet ("{id}")]
+        public Task<Notificacao> Get (string id) {
+            var not = _cob.consultarNotificacao (id);
+            if (not.Result.cobranca.recebimento != null) {
+                _mysql.baixarPagamento (not.Result);
+            }
+            return not;
+        }
+
+        [Route ("api/recebermanual/{id}")]
+        //[HttpGet ("{id}")]
+        public Task<bool> PagarManual (string id) {
+            var not = _cob.receberManual (id);
+            return not;
+        }
+
+        [Route ("api/consultarcobranca/{id}")]
+        //[HttpGet ("{id}")]
+        public Task<RetornoCobrancas> consultarcobranca (string id) {
+            var not = _cob.consultarCobranca (id);
+            return not;
+        }
+
+    }
+}
