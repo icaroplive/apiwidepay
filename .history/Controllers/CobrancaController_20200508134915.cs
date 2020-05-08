@@ -55,10 +55,11 @@ namespace api_widepay.Controllers {
         public List<RetornoDadosBoleto> Put ([FromBody] List<int> idfin_movimento) {
             var lista = new List<RetornoDadosBoleto> ();
             foreach (var x in idfin_movimento) {
-                var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
-                var boleto = _cob.pegarCodigoBarra (fin_movimento.idwidepay).Result;
-                _boletoStorage.gravarTxt (x, boleto.html);
+                var result = _cob.criarCobranca (x);
+                var boleto = _cob.pegarCodigoBarra (result.Result.id).Result;
+                _mysql.atualizarFinMovimento (x, result.Result.id, boleto.codigo);
                 boleto.idfin_movimento = x;
+                _boletoStorage.gravarTxt (x, boleto.html);
                 lista.Add (boleto);
             }
             return lista;
