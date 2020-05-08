@@ -1,0 +1,12 @@
+using System.Net;
+using api_widepay.Interfaces;
+
+namespace api_widepay.Services {
+    public class GraphService : IGraph {
+        public byte[] pegarGrafico (string cpf) {
+            var webClient = new WebClient ();
+            byte[] imageBytes = webClient.DownloadData (string.Format("http://192.168.250.254/graphs/queue/{0}/daily.gif",cpf));
+            return imageBytes;
+        }
+    }
+}

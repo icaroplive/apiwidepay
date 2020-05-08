@@ -11634,7 +11634,7 @@
       ]
     },
     "System.Text.Encoding.CodePages/4.5.0": {
-      "sha512": "16EVkWmNnoH3/Yj9c5s5VuLK5Uv/Dnkc3P2kMmnD7wJcUuvcHVvM2IhVJanf2hHRZUitH+cIkPCPHrBoCXc7Rw==",
+      "sha512": "S0wEUiKcLvRlkFUXca8uio1UQ5bYQzYgOmOKtCqaBQC3GR9AJjh43otcM32IGsAyvadFTaAMw9Irm6dS4Evfng==",
       "type": "package",
       "path": "system.text.encoding.codepages/4.5.0",
       "files": [
@@ -12501,11 +12501,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\netcore\\api-widepay\\api-widepay.csproj",
+      "projectUniqueName": "c:\\netcore\\api-widepay\\api-widepay.csproj",
       "projectName": "api-widepay",
-      "projectPath": "C:\\netcore\\api-widepay\\api-widepay.csproj",
+      "projectPath": "c:\\netcore\\api-widepay\\api-widepay.csproj",
       "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-      "outputPath": "C:\\netcore\\api-widepay\\obj\\",
+      "outputPath": "c:\\netcore\\api-widepay\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
