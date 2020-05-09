@@ -29,6 +29,11 @@ namespace api_widepay.Controllers {
             return _parcelas.removerParcelas (idfin_movimento);
 
         }
+        [HttpPut]
+        public ActionResult<RetornoCancela> Put ([FromBody] List<int> idfin_movimento) {
+            return _parcelas.removerParcelas (idfin_movimento);
+
+        }
 
     }
 }

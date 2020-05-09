@@ -12,7 +12,9 @@ namespace api_widepay.Interfaces {
         Task<RetornoCobrancas> consultarCobranca (string id);
         Task<Cobrancas> consultarCobrancas ();
         Task<bool> receberManual (string id);
-        Task<RetornoCancela> cancelarCobrancas(List<string> idwidepay);
+        Task<RetornoCancela> cancelarCobrancas (List<string> idwidepay);
+        Task<string> geraPDF (List<int> idfin_movimento);
+        Task<string> downloadPDF (int id);
 
     }
 }
