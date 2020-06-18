@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace api_widepay.Models {
     public class Cobranca {
@@ -23,6 +24,12 @@ namespace api_widepay.Models {
         public DateTime? recebimento { get; set; }
         public string status { get; set; }
         public List<historico> historico { get; set; }
+
+        [JsonProperty (NullValueHandling = NullValueHandling.Ignore)]
+        public decimal recebido { get; set; }
+
+        [JsonProperty (NullValueHandling = NullValueHandling.Ignore)]
+        public decimal tarifa { get; set; }
 
     }
     public class historico {
