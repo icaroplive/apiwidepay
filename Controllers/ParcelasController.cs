@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_widepay.Controllers {
-    [Route ("api/[controller]")]
+    //  [Route ("api/[controller]")]
     [ApiController]
     public class ParcelasController : ControllerBase {
         private IParcelas _parcelas;
@@ -18,19 +18,23 @@ namespace api_widepay.Controllers {
             _parcelas = parcelas;
         }
 
+        [Route ("api/parcelas/{id}")]
         [HttpGet ("{id}")]
         public ActionResult<List<fin_movimento>> Get (int id) {
             return _parcelas.pegarParcelas (id);
 
         }
 
+        [Route ("api/cancelarERemoverParcelas")]
         [HttpDelete]
-        public ActionResult<RetornoCancela> Delete ([FromBody] List<int> idfin_movimento) {
-            return _parcelas.removerParcelas (idfin_movimento);
+        public ActionResult<RetornoCancela> cancelarERemoverParcelas ([FromBody] List<int> idfin_movimento) {
+            return _parcelas.cancelarEremoverParcelas (idfin_movimento);
 
         }
-        [HttpPut]
-        public ActionResult<RetornoCancela> Put ([FromBody] List<int> idfin_movimento) {
+
+        [Route ("api/removerParcelas")]
+        [HttpDelete]
+        public ActionResult<bool> removerParcelas ([FromBody] List<int> idfin_movimento) {
             return _parcelas.removerParcelas (idfin_movimento);
 
         }
