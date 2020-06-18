@@ -14,6 +14,8 @@ namespace api_widepay.Models.WidePay
         public string status { get; set; }
         public DateTime? vencimento { get; set; }
         public DateTime? recebimento { get; set; }
+        public decimal recebido { get; set; }
+        public decimal tarifa { get; set; }
         public string cliente { get; set; }
     }
 }
