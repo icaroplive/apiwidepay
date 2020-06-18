@@ -24,7 +24,7 @@ namespace api_widepay.Repository {
             return _db.fin_movimento.Where (f => f.idcad_descricao == idcad_descricao).OrderByDescending (f => f.data_venc).ToList ();
         }
 
-        public RetornoCancela removerParcelas (List<int> parcelas) {
+        public RetornoCancela cancelarEremoverParcelas (List<int> parcelas) {
 
             var lista_idwidepay = _db.fin_movimento.Where (f => parcelas.Contains (f.idfin_movimento)).ToList ();
 
@@ -32,9 +32,20 @@ namespace api_widepay.Repository {
 
             var xxx = _widepay.cancelarCobrancas (lista_cancela).Result;
 
-            _db.RemoveRange(lista_idwidepay);
-            _db.SaveChanges();
+            _db.RemoveRange (lista_idwidepay);
+            _db.SaveChanges ();
             return xxx;
+
+        }
+
+        public bool removerParcelas (List<int> parcelas) {
+
+            var lista_idwidepay = _db.fin_movimento.Where (f => parcelas.Contains (f.idfin_movimento)).ToList ();
+
+            _db.RemoveRange (lista_idwidepay);
+
+            _db.SaveChanges ();
+            return true;
 
         }
 
