@@ -11,6 +11,7 @@ namespace api_widepay.Models.Contas {
         public string email { get; set; }
         public DateTime? dt_inicio { get; set; }
         public DateTime? dt_fim { get; set; }
+        public decimal vlr { get; set; }
         public virtual cliente_plano cliente_plano { get; set; }
     }
 }
