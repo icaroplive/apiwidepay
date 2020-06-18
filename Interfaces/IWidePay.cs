@@ -16,5 +16,7 @@ namespace api_widepay.Interfaces {
         Task<string> geraPDF (List<int> idfin_movimento);
         Task<string> downloadPDF (int id);
 
+        void atualizarValorRecebido ();
+
     }
 }
