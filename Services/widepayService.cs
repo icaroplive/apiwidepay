@@ -11,10 +11,12 @@ using System.Web;
 using api_widepay.Entities;
 using api_widepay.Interfaces;
 using api_widepay.Models;
+using api_widepay.Models.Contas;
 using api_widepay.Models.Retorno;
 using api_widepay.Models.WidePay;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace api_widepay.Services {
@@ -35,6 +37,7 @@ namespace api_widepay.Services {
         }
         public async Task<RetornoBoleto> criarCobranca (int idfin_movimento) {
             var mov = _mysql.buscarPorIdFinMovimento (idfin_movimento);
+
             var cli = _mysql.buscarClientePorId (mov.idcad_descricao);
 
             var url = "https://api.widepay.com/v1/recebimentos/cobrancas/adicionar";
@@ -107,7 +110,7 @@ namespace api_widepay.Services {
             };
             var result = await _httpClient.SendAsync (request);
 
-            return JsonConvert.DeserializeObject<RetornoCobrancas> (result.Content.ReadAsStringAsync ().Result);;
+            return JsonConvert.DeserializeObject<RetornoCobrancas> (result.Content.ReadAsStringAsync ().Result);
         }
 
         public async Task<bool> receberManual (string id) {
@@ -223,7 +226,20 @@ namespace api_widepay.Services {
             await response.Content.CopyToAsync (fs);
             fs.Close ();
             return string.Format ("{0}.pdf", id);
-           // return fs;
+            // return fs;
+        }
+
+        public void atualizarValorRecebido () {
+            var cobrancas = _db.fin_movimento.Where (f => f.idwidepay != null && f.idwidepay != "" && f.status_pagamento == 1).AsNoTracking().ToList ();
+
+            foreach (var x in cobrancas) {
+                var widepay = this.consultarCobranca (x.idwidepay).Result;
+                fin_movimento fin = (from b in _db.fin_movimento where b.idfin_movimento == x.idfin_movimento select b).AsNoTracking ().FirstOrDefault ();
+                fin.vlr_pag = widepay.cobrancas[0].recebido - widepay.cobrancas[0].tarifa;
+                fin.vlr_tarifa = widepay.cobrancas[0].tarifa;
+                _db.Entry (fin).State = EntityState.Modified;
+                _db.SaveChanges ();
+            }
         }
 
     }
