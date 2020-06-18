@@ -20,6 +20,12 @@ namespace api_widepay.Controllers {
             _cob = cob;
         }
 
+        [Route ("api/notificacao")]
+        [HttpGet]
+        public void notificacao (string id) {
+            _cob.atualizarValorRecebido();
+        }
+
         [Route ("api/notificacao/{id}")]
         //[HttpGet ("{id}")]
         public Task<Notificacao> Get (string id) {
