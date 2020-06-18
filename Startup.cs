@@ -36,6 +36,7 @@ namespace api_widepay {
             services.AddTransient<IGraph, GraphService> ();
             services.AddTransient<IParcelas, ParcelasRepository> ();
             services.AddTransient<IBoletoStorage, BoletoStorage> ();
+            services.AddTransient<IVelocidadeService, VelocidadeService> ();
             services.AddCors ();
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
         }
