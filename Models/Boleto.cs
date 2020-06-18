@@ -7,6 +7,6 @@ namespace api_widepay.Models
         public decimal desconto { get; set; }
         public decimal multa { get; set; }
         public decimal juros { get; set; }
-        public InstrucoesBoleto instrucoes { get; set; }   
+        public string[] instrucoes { get; set; }   
     }
 }
