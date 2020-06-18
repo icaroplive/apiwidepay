@@ -5,14 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api_widepay.Entities;
 using api_widepay.Models.Contas;
+using api_widepay.Services;
+using api_widepay.Interfaces;
 
 namespace api_widepay.Controllers {
     [Route ("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase {
         private BancoContext _db;
-        public ClientesController (BancoContext db) {
+        private IVelocidadeService _velocidade;
+        public ClientesController (BancoContext db, IVelocidadeService velocidadeService) {
             _db = db;
+            _velocidade = velocidadeService;
         }
 
         [HttpGet]
@@ -34,6 +38,7 @@ namespace api_widepay.Controllers {
             _db.cad_cliente.Update (value);
             _db.SaveChanges ();
             value.cliente_plano.planos = _db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault();
+            _velocidade.atualizar(value.idcad_cliente);
             return value;
         }
 
