@@ -16,7 +16,7 @@ namespace api_widepay.Services {
 
         }
         public List<fin_movimento> boletosMais30Dias () {
-            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_venc).Days > 30).ToList ();
+            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
         }
         public void atualizarBoletoMais30Dias (List<fin_movimento> fin_movimento) {
 
