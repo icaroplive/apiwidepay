@@ -57,9 +57,9 @@ namespace api_widepay.Controllers {
         [Route ("api/notificacao")]
         public fin_movimento Post ([FromForm] PayLoadNotificacao payload) {
             fin_movimento fin = new fin_movimento ();
-            var not = _cob.consultarNotificacao (payload.notificacao);
-            if (not.Result.cobranca.status == "Recebido") {
-                fin = _mysql.baixarPagamento (not.Result);
+            var not = _cob.consultarNotificacao (payload.notificacao).Result;
+            if (not.cobranca != null && not.sucesso == true && not.cobranca.status == "Recebido") {
+                fin = _mysql.baixarPagamento (not);
             }
             return fin;
 
