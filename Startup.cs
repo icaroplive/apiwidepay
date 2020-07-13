@@ -28,7 +28,9 @@ namespace api_widepay {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
-
+            services.AddMvc (options => options.EnableEndpointRouting = false);
+            //OR
+            services.AddControllers (options => options.EnableEndpointRouting = false);
             services.AddDbContext<BancoContext> (options => options.UseLazyLoadingProxies ().UseMySql (Configuration.GetConnectionString ("DefaultConnection")));
             services.AddTransient<IWidePay, widepayService> ();
             services.AddTransient<IMysql, MysqlRepository> ();
@@ -43,7 +45,7 @@ namespace api_widepay {
                     .AllowAnyMethod ()
                     .AllowAnyHeader ());
             });
-            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_3_0);
+           // services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
