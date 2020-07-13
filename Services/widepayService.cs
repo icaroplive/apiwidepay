@@ -15,7 +15,6 @@ using api_widepay.Models.Contas;
 using api_widepay.Models.Retorno;
 using api_widepay.Models.WidePay;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -59,7 +58,7 @@ namespace api_widepay.Services {
                 Content = new FormUrlEncodedContent (nvc)
             };
             var result = await _httpClient.SendAsync (request);
-            return JsonConvert.DeserializeObject<RetornoBoleto> (result.Content.ReadAsStringAsync ().Result);;
+            return JsonConvert.DeserializeObject<RetornoBoleto> (result.Content.ReadAsStringAsync ().Result);
         }
         public async Task<RetornoDadosBoleto> pegarCodigoBarra (string id) {
 
@@ -145,7 +144,7 @@ namespace api_widepay.Services {
 
             nvc.Add (new KeyValuePair<string, string> ("filtro[2][]", "recebimento"));
             nvc.Add (new KeyValuePair<string, string> ("filtro[2][]", "<="));
-            nvc.Add (new KeyValuePair<string, string> ("filtro[2][]", "2020-04-30 23:59:59"));
+            nvc.Add (new KeyValuePair<string, string> ("filtro[2][]", "2020-07-09 23:59:59"));
 
             nvc.Add (new KeyValuePair<string, string> ("filtro[3][]", "status"));
             nvc.Add (new KeyValuePair<string, string> ("filtro[3][]", "[]"));
@@ -230,7 +229,7 @@ namespace api_widepay.Services {
         }
 
         public void atualizarValorRecebido () {
-            var cobrancas = _db.fin_movimento.Where (f => f.idwidepay != null && f.idwidepay != "" && f.status_pagamento == 1).AsNoTracking().ToList ();
+            var cobrancas = _db.fin_movimento.Where (f => f.idwidepay != null && f.idwidepay != "" && f.status_pagamento == 1).AsNoTracking ().ToList ();
 
             foreach (var x in cobrancas) {
                 var widepay = this.consultarCobranca (x.idwidepay).Result;

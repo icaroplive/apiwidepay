@@ -37,8 +37,13 @@ namespace api_widepay {
             services.AddTransient<IParcelas, ParcelasRepository> ();
             services.AddTransient<IBoletoStorage, BoletoStorage> ();
             services.AddTransient<IVelocidadeService, VelocidadeService> ();
-            services.AddCors ();
-            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
+            services.AddCors (options => {
+                options.AddPolicy ("CorsPolicy",
+                    builder => builder.AllowAnyOrigin ()
+                    .AllowAnyMethod ()
+                    .AllowAnyHeader ());
+            });
+            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,13 +54,9 @@ namespace api_widepay {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts ();
             }
-            
+
             //app.UseHttpsRedirection ();
-            app.UseCors (builder => builder
-                .AllowAnyOrigin ()
-                .AllowAnyMethod ()
-                .AllowAnyHeader ()
-                .AllowCredentials ());
+            app.UseCors ("CorsPolicy");
             app.UseMvc ();
             app.UseFileServer (new FileServerOptions () {
                 RequestPath = new PathString ("/boletos"),

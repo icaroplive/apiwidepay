@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using api_widepay.Entities;
 using api_widepay.Interfaces;
 using api_widepay.Models;
 using api_widepay.Models.Contas;
 using api_widepay.Models.Retorno;
 using api_widepay.Models.WidePay;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System;
 
 namespace api_widepay.Controllers {
     // [Route ("api/[controller]")]
@@ -15,15 +16,17 @@ namespace api_widepay.Controllers {
     public class NotificacaoController : ControllerBase {
         private IMysql _mysql;
         private IWidePay _cob;
-        public NotificacaoController (IMysql mysql, IWidePay cob) {
+        private BancoContext _banco;
+        public NotificacaoController (IMysql mysql, IWidePay cob, BancoContext banco) {
             _mysql = mysql;
             _cob = cob;
+            _banco = banco;
         }
 
         [Route ("api/notificacao")]
         [HttpGet]
         public void notificacao (string id) {
-            _cob.atualizarValorRecebido();
+            _cob.atualizarValorRecebido ();
         }
 
         [Route ("api/notificacao/{id}")]
@@ -50,6 +53,18 @@ namespace api_widepay.Controllers {
 
         [Route ("api/consultarcobrancas")]
         public Cobrancas consultarcobrancas () {
+            var cob = _cob.consultarCobrancas ().Result;
+            foreach (var x in cob.cobrancas) {
+                var update = _banco.fin_movimento.Where (f => f.idwidepay == x.id).FirstOrDefault ();
+                if (update != null) {
+                    update.vlr_pag = x.recebido;
+                    update.vlr_tarifa = x.tarifa;
+                    update.data_pag = x.recebimento;
+
+                    _banco.Update (update);
+                    _banco.SaveChanges ();
+                }
+            }
             return _cob.consultarCobrancas ().Result;
         }
 

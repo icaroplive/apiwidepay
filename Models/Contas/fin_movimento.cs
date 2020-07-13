@@ -10,7 +10,7 @@ namespace api_widepay.Models.Contas {
         [ForeignKey ("cad_cliente")]
         public int idcad_descricao { get; set; }
 
-        public DateTime data_pag { get; set; } = DateTime.Parse("01-01-0001");
+        public DateTime? data_pag { get; set; } = DateTime.Parse("01-01-0001");
         public DateTime data_venc { get; set; } = DateTime.Parse("01-01-0001");
         public decimal vlr_cob { get; set; }
         public DateTime data_boleto { get; set; } = DateTime.Parse("01-01-0001");
@@ -22,6 +22,7 @@ namespace api_widepay.Models.Contas {
         public decimal vlr_pag { get; set; }
         public decimal vlr_tarifa { get; set; }
         public string obs { get; set; }
+        public int tipo_movimento { get; set; }
 
     }
 }

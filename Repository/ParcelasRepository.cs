@@ -21,7 +21,7 @@ namespace api_widepay.Repository {
             _widepay = widepay;
         }
         public List<fin_movimento> pegarParcelas (int idcad_descricao) {
-            return _db.fin_movimento.Where (f => f.idcad_descricao == idcad_descricao).OrderByDescending (f => f.data_venc).ToList ();
+            return _db.fin_movimento.Where (f => f.idcad_descricao == idcad_descricao && f.tipo_movimento==2).OrderByDescending (f => f.data_venc).ToList ();
         }
 
         public RetornoCancela cancelarEremoverParcelas (List<int> parcelas) {
