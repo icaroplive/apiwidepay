@@ -76,7 +76,8 @@ namespace api_widepay.Controllers {
             if (not.cobranca != null && not.sucesso == true && not.cobranca.status == "Recebido") {
                 fin = _mysql.baixarPagamento (not);
             }
-            return fin;
+
+             return fin;
 
         }
 

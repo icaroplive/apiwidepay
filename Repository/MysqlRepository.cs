@@ -32,14 +32,15 @@ namespace api_widepay.Repository {
         public fin_movimento baixarPagamento (Notificacao not) {
 
             fin_movimento fin = (from b in _banco.fin_movimento where b.idwidepay == not.cobranca.id select b).AsNoTracking ().FirstOrDefault ();
-
-            fin.data_pag = not.cobranca.recebimento;
-            fin.vlr_pag = not.cobranca.recebido - not.cobranca.tarifa; // fin.vlr_cob - fin.vlr_tarifa;
-            fin.status_pagamento = 1;
-            fin.idcad_conta = 3;
-            _banco.Entry (fin).State = EntityState.Modified;
-            _banco.SaveChanges ();
-            return fin;
+            if (fin != null) {
+                fin.data_pag = not.cobranca.recebimento;
+                fin.vlr_pag = not.cobranca.recebido - not.cobranca.tarifa; // fin.vlr_cob - fin.vlr_tarifa;
+                fin.status_pagamento = 1;
+                fin.idcad_conta = 3;
+                _banco.Entry (fin).State = EntityState.Modified;
+                _banco.SaveChanges ();
+                return fin;
+            } else return new fin_movimento ();
         }
 
     }
