@@ -191,9 +191,7 @@ namespace api_widepay.Services
             }
             return navrat;
         }
-        public void atualizarVelocidades() {
-            
-        }
+        
 
     }
 }

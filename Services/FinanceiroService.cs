@@ -16,7 +16,7 @@ namespace api_widepay.Services {
 
         }
         public List<fin_movimento> boletosMais30Dias () {
-            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
+            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && EF.Functions.DateDiffDay(c.data_boleto,DateTime.Now) > 30).ToList (); //.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
         }
         public void atualizarBoletoMais30Dias (List<fin_movimento> fin_movimento) {
 
@@ -26,7 +26,7 @@ namespace api_widepay.Services {
                 _db.Entry (x).State = EntityState.Modified;
 
                 _db.SaveChanges ();
-                
+
             }
             foreach (var x in fin_movimento) {
                 var boleto = _cob.criarCobranca (x.idfin_movimento);
@@ -44,9 +44,8 @@ namespace api_widepay.Services {
 
         }
 
-        public void atualizarBoletos(List<int> idfin_movimento)
-        {
-            var fin= _db.fin_movimento.Where(f => idfin_movimento.Contains(f.idfin_movimento)).ToList();
+        public void atualizarBoletos (List<int> idfin_movimento) {
+            var fin = _db.fin_movimento.Where (f => idfin_movimento.Contains (f.idfin_movimento)).ToList ();
 
             foreach (var x in fin) {
                 x.data_boleto = DateTime.Now.AddDays (DateTime.Now.AddDays (-10).DayOfWeek == DayOfWeek.Sunday ? -9 : DateTime.Now.AddDays (-10).DayOfWeek == DayOfWeek.Saturday ? -8 : -10);
@@ -54,7 +53,7 @@ namespace api_widepay.Services {
                 _db.Entry (x).State = EntityState.Modified;
 
                 _db.SaveChanges ();
-                
+
             }
             foreach (var x in fin) {
                 var boleto = _cob.criarCobranca (x.idfin_movimento);

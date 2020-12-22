@@ -18,14 +18,14 @@ namespace mk.Controllers {
 
         [HttpGet]
         public ActionResult<List<fin_movimento>> Get () {
-            var dataHoje = DateTime.Now.Date;
+              var dataHoje = DateTime.Now.Date;
             /*var ew = _db.fin_movimento
                 .Where (c => c.data_venc > DateTime.Parse ("01/01/0001 00:00:00") && c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && dataHoje > c.data_venc)
                 .Include ("cad_cliente")
                // .Include ("cliente_plano.planos")
                 .ToList ();*/
-            return _db.fin_movimento.Where (c => c.data_venc > DateTime.Parse ("01/01/0001 00:00:00") && c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && dataHoje > c.data_venc).ToList ();
-
+            return _db.fin_movimento.Where (c => c.data_venc > DateTime.Parse ("01/01/0001 00:00:00") && c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && dataHoje > c.data_venc && c.tipo_movimento==2).ToList ();
+           
             //   return ew;
 
         }

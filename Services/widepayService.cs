@@ -37,6 +37,9 @@ namespace api_widepay.Services {
         public async Task<RetornoBoleto> criarCobranca (int idfin_movimento) {
             var mov = _mysql.buscarPorIdFinMovimento (idfin_movimento);
 
+            if (DateTime.Now  > mov.data_boleto) {
+                mov.data_boleto = DateTime.Now.AddDays (DateTime.Now.AddDays (-10).DayOfWeek == DayOfWeek.Sunday ? -9 : DateTime.Now.AddDays (-10).DayOfWeek == DayOfWeek.Saturday ? -8 : -10);
+            }
             var cli = _mysql.buscarClientePorId (mov.idcad_descricao);
 
             var url = "https://api.widepay.com/v1/recebimentos/cobrancas/adicionar";

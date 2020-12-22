@@ -30,14 +30,25 @@ namespace api_widepay.Controllers {
             return ew;
 
         }
-
+        [HttpPost]
+        public ActionResult<cad_cliente> Post ([FromBody] cad_cliente value) {
+            //value.cliente_plano.planos = null;
+            //_db.Entry (value).State = EntityState.Detached;
+            //_db.Remove(_db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault());
+            _db.cad_cliente.Add (value);
+            _db.SaveChanges ();
+            //value.cliente_plano.planos = _db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault();
+            _velocidade.atualizar(value.idcad_cliente);
+            return value;
+        }
         [HttpPut]
         public ActionResult<cad_cliente> Put ([FromBody] cad_cliente value) {
-            value.cliente_plano.planos = null;
+            //value.cliente_plano.planos = null;
             //_db.Entry (value).State = EntityState.Detached;
+            //_db.Remove(_db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault());
             _db.cad_cliente.Update (value);
             _db.SaveChanges ();
-            value.cliente_plano.planos = _db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault();
+            //value.cliente_plano.planos = _db.planos.Where(p => p.id == value.cliente_plano.idplano).FirstOrDefault();
             _velocidade.atualizar(value.idcad_cliente);
             return value;
         }

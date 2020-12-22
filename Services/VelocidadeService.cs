@@ -7,8 +7,16 @@ using Microsoft.EntityFrameworkCore;
 namespace api_widepay.Services {
     public class VelocidadeService : IVelocidadeService {
         BancoContext _db;
-        public VelocidadeService (BancoContext db) {
+        IClienteService _clienteService;
+        public VelocidadeService (BancoContext db, IClienteService clienteService) {
             _db = db;
+            _clienteService = clienteService;
+        }
+        public void atualizarVelocidades () {
+            var clientes = _clienteService.pegarClientesAtivos ();
+            foreach (var cliente in clientes) {
+                this.atualizar (cliente.idcad_cliente);
+            }
         }
         public void atualizar (int idcad_cliente) {
             var cliente =

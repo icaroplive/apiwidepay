@@ -39,6 +39,7 @@ namespace api_widepay {
             services.AddTransient<IParcelas, ParcelasRepository> ();
             services.AddTransient<IBoletoStorage, BoletoStorage> ();
             services.AddTransient<IVelocidadeService, VelocidadeService> ();
+            services.AddTransient<IClienteService, ClienteService> ();
             services.AddCors (options => {
                 options.AddPolicy ("CorsPolicy",
                     builder => builder.AllowAnyOrigin ()

@@ -10,26 +10,29 @@ namespace api_widepay.Controllers {
     public class ValuesController : ControllerBase {
         private IWidePay _cob;
         private IFinanceiro _fin;
-        public ValuesController (IWidePay cob, IFinanceiro fin) {
+        private IVelocidadeService _velocidade;
+        public ValuesController (IWidePay cob, IFinanceiro fin, IVelocidadeService velocidade) {
             _cob = cob;
             _fin = fin;
+            _velocidade = velocidade;
         }
         // GET api/values
         [HttpGet]
         public string[] Get () {
-           var fin_movimento = _fin.boletosMais30Dias();
-           _fin.atualizarBoletoMais30Dias(fin_movimento);
+            //_velocidade.atualizarVelocidades ();
+            var fin_movimento = _fin.boletosMais30Dias();
+            _fin.atualizarBoletoMais30Dias (fin_movimento);
             // var result = cob.criarCobranca ();
-           // var boleto = _cob.pegarCodigoBarra ("9A929CBF78A76544");
-           // return boleto;
+            // var boleto = _cob.pegarCodigoBarra ("9A929CBF78A76544");
+            // return boleto;
             return new string[] { "value1", "value2" };
         }
 
         // POST api/values
         [HttpPost]
-        public void Post ([FromBody] List<int> fin) { 
+        public void Post ([FromBody] List<int> fin) {
 
-            _fin.atualizarBoletos(fin);
+            // _fin.atualizarBoletos(fin);
         }
 
         // PUT api/values/5

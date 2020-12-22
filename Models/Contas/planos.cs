@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace api_widepay.Models.Contas {
@@ -10,6 +11,7 @@ namespace api_widepay.Models.Contas {
         public string velocidade_minima_burst { get; set; }
         public string velocidade_maxima { get; set; }
         public string tempo_burst { get; set; }
+     //   public virtual IEnumerable<cliente_plano> cliente_plano { get; set; }
 
     }
 }
