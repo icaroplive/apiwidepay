@@ -9,7 +9,7 @@ namespace api_widepay.Models.WidePay {
     }
     public class cobranca {
         public string id { get; set; }
-        public DateTime recebimento { get; set; } = DateTime.Parse("01-01-0001");
+        public DateTime? recebimento { get; set; } = DateTime.Parse("01-01-0001");
 
         [JsonProperty (NullValueHandling = NullValueHandling.Ignore)]
         public decimal recebido { get; set; }
