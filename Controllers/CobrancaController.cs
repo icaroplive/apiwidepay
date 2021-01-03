@@ -61,8 +61,8 @@ namespace api_widepay.Controllers {
         }
 
         [Route ("api/syncBoleto")]
-        [HttpPut]
-        public List<RetornoDadosBoleto> Put ([FromBody] List<int> idfin_movimento) {
+        [HttpPost]
+        public List<RetornoDadosBoleto> syncBoleto ([FromBody] List<int> idfin_movimento) {
             var lista = new List<RetornoDadosBoleto> ();
             foreach (var x in idfin_movimento) {
                 var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
