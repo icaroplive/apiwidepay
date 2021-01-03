@@ -6,7 +6,7 @@ namespace api_widepay.Storage {
         public void gravarTxt (int idfin_movimento, string codigo) {
             string filePath = @"/var/www/api.ipr.net.br/segunda-via/boletos/" + idfin_movimento + ".txt";
             using (StreamWriter outputFile = new StreamWriter (filePath)) {
-                outputFile.WriteLine (codigo);
+                outputFile.WriteLine (codigo.Replace("CPF: 095.441.926-03","CNPJ: 23.418.622/0001-30"));
             }
         }
     }

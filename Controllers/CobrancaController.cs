@@ -32,7 +32,7 @@ namespace api_widepay.Controllers {
         [HttpGet ("{id}")]
         public List<fin_movimento> cobrancasSemBoleto (int id) {
 
-            return _fin.cobrancasSemBoleto();
+            return _fin.cobrancasSemBoleto ();
         }
 
         [Route ("api/addCobranca")]
@@ -60,18 +60,18 @@ namespace api_widepay.Controllers {
             return boleto;
         }
 
-        [Route ("api/syncBoleto")]
+        [Route ("api/syncBoletos")]
         [HttpPost]
-        public List<RetornoDadosBoleto> syncBoleto ([FromBody] List<int> idfin_movimento) {
-            var lista = new List<RetornoDadosBoleto> ();
+        public void syncBoletos ([FromBody] List<int> idfin_movimento) {
             foreach (var x in idfin_movimento) {
-                var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
-                var boleto = _cob.pegarCodigoBarra (fin_movimento.idwidepay).Result;
-                _boletoStorage.gravarTxt (x, boleto.html.Replace("CPF: 095.441.926-03","CNPJ: 23.418.622/0001-30"));
-                boleto.idfin_movimento = x;
-                lista.Add (boleto);
+                _fin.gravarBoletoTxt (x);
             }
-            return lista;
+        }
+
+        [Route ("api/syncTodosBoletos")]
+        [HttpPost]
+        public void syncTodosBoletos ([FromBody] List<int> idfin_movimento) {
+                _fin.gravarBoletosTxt ();
         }
     }
 }

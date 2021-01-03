@@ -10,13 +10,19 @@ namespace api_widepay.Services {
     public class FinanceiroService : IFinanceiro {
         BancoContext _db;
         IWidePay _cob;
-        public FinanceiroService (BancoContext db, IWidePay cob) {
+
+        IMysql _mysql;
+
+        IBoletoStorage _boleto;
+        public FinanceiroService (BancoContext db, IWidePay cob, IMysql mysql, IBoletoStorage boleto) {
             _db = db;
             _cob = cob;
+            _mysql = mysql;
+            _boleto = boleto;
 
         }
         public List<fin_movimento> boletosMais30Dias () {
-            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && EF.Functions.DateDiffDay(c.data_boleto,DateTime.Now) > 30).ToList (); //.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
+            return _db.fin_movimento.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && EF.Functions.DateDiffDay (c.data_boleto, DateTime.Now) > 30).ToList (); //.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
         }
         public void atualizarBoletoMais30Dias (List<fin_movimento> fin_movimento) {
 
@@ -71,9 +77,25 @@ namespace api_widepay.Services {
 
         }
 
-        public List<fin_movimento> cobrancasSemBoleto()
-        {
+        public List<fin_movimento> cobrancasSemBoleto () {
             return _db.fin_movimento.Where (c => c.tipo_movimento == 2 && c.idwidepay == String.Empty && c.data_pag == DateTime.Parse ("01/01/0001 00:00:00")).ToList (); //.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
+        }
+
+        public void gravarBoletoTxt (int idfin_movimento) {
+            var fin_mov = _db.fin_movimento.Where (c => c.idfin_movimento == idfin_movimento && (c.idwidepay != String.Empty && c.idwidepay != null)).FirstOrDefault();
+            if (fin_mov != null) {
+                var boleto = _cob.pegarCodigoBarra (fin_mov.idwidepay).Result;
+                _boleto.gravarTxt (idfin_movimento, boleto.html);
+            }
+        }
+
+        public void gravarBoletosTxt () {
+            var boletos = _db.fin_movimento.Where (c => c.tipo_movimento == 2 && (c.idwidepay != String.Empty && c.idwidepay != null) && c.data_pag == DateTime.Parse ("01/01/0001 00:00:00")).Select (c => c.idfin_movimento).ToList ();
+            foreach (var x in boletos) {
+                var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
+                var boleto = _cob.pegarCodigoBarra (fin_movimento.idwidepay).Result;
+                _boleto.gravarTxt (x, boleto.html);
+            }
         }
     }
 }
