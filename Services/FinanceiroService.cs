@@ -70,5 +70,10 @@ namespace api_widepay.Services {
             }
 
         }
+
+        public List<fin_movimento> cobrancasSemBoleto()
+        {
+            return _db.fin_movimento.Where (c => c.tipo_movimento == 2 && c.idwidepay == String.Empty && c.data_pag == DateTime.Parse ("01/01/0001 00:00:00")).ToList (); //.Where (c => c.data_pag <= DateTime.Parse ("01/01/0001 00:00:00") && DateTime.Now > c.data_boleto && DateTime.Now.Subtract (c.data_boleto).Days > 30).ToList ();
+        }
     }
 }
