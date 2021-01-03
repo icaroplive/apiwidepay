@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using api_widepay.Interfaces;
 using api_widepay.Models;
+using api_widepay.Models.Contas;
 using api_widepay.Models.Retorno;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,13 @@ namespace api_widepay.Controllers {
     public class CobrancaController : ControllerBase {
         private IMysql _mysql;
         private IWidePay _cob;
+        private IFinanceiro _fin;
         private IBoletoStorage _boletoStorage;
-        public CobrancaController (IMysql mysql, IWidePay cob, IBoletoStorage boletoStorage) {
+        public CobrancaController (IMysql mysql, IWidePay cob, IBoletoStorage boletoStorage, IFinanceiro fin) {
             _mysql = mysql;
             _cob = cob;
             _boletoStorage = boletoStorage;
+            _fin = fin;
         }
 
         [Route ("api/addCobranca/{id}")]
@@ -23,6 +26,13 @@ namespace api_widepay.Controllers {
             var boleto = _cob.pegarCodigoBarra (result.Result.id);
             _mysql.atualizarFinMovimento (id, result.Result.id, boleto.Result.codigo);
             return result;
+        }
+
+        [Route ("api/cobrancasSemBoleto")]
+        [HttpGet ("{id}")]
+        public List<fin_movimento> cobrancasSemBoleto (int id) {
+
+            return _fin.cobrancasSemBoleto();
         }
 
         [Route ("api/addCobranca")]
@@ -57,7 +67,7 @@ namespace api_widepay.Controllers {
             foreach (var x in idfin_movimento) {
                 var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
                 var boleto = _cob.pegarCodigoBarra (fin_movimento.idwidepay).Result;
-                _boletoStorage.gravarTxt (x, boleto.html);
+                _boletoStorage.gravarTxt (x, boleto.html.Replace("CPF: 095.441.926-03","CNPJ: 23.418.622/0001-30"));
                 boleto.idfin_movimento = x;
                 lista.Add (boleto);
             }
