@@ -48,6 +48,10 @@ namespace api_widepay.Services {
                 _db.SaveChanges ();
             }
 
+            foreach (var x in fin_movimento) {
+                this.gravarBoletoTxt (x.idfin_movimento);
+            }
+
         }
 
         public void atualizarBoletos (List<int> idfin_movimento) {
@@ -73,6 +77,9 @@ namespace api_widepay.Services {
                 _db.Entry (x).State = EntityState.Modified;
 
                 _db.SaveChanges ();
+            }
+            foreach (var x in idfin_movimento) {
+                this.gravarBoletoTxt (x);
             }
 
         }

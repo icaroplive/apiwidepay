@@ -70,7 +70,7 @@ namespace api_widepay.Controllers {
 
         [Route ("api/syncTodosBoletos")]
         [HttpPost]
-        public void syncTodosBoletos ([FromBody] List<int> idfin_movimento) {
+        public void syncTodosBoletos () {
                 _fin.gravarBoletosTxt ();
         }
     }
