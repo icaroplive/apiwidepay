@@ -64,6 +64,9 @@ namespace api_widepay.Controllers {
         [HttpPost]
         public void syncBoletos ([FromBody] List<int> idfin_movimento) {
             foreach (var x in idfin_movimento) {
+                var fin_movimento = _mysql.buscarPorIdFinMovimento (x);
+                var boleto = _cob.pegarCodigoBarra (fin_movimento.idwidepay);
+                _mysql.atualizarFinMovimento (fin_movimento.idfin_movimento, fin_movimento.idwidepay, boleto.Result.codigo);
                 _fin.gravarBoletoTxt (x);
             }
         }
