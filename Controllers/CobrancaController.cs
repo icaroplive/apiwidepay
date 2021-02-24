@@ -44,7 +44,8 @@ namespace api_widepay.Controllers {
                 var boleto = _cob.pegarCodigoBarra (result.id).Result;
                 _mysql.atualizarFinMovimento (x, result.id, boleto.codigo);
                 boleto.idfin_movimento = x;
-                _boletoStorage.gravarTxt (x, boleto.html);
+                //_boletoStorage.gravarTxt (x, boleto.html);
+                _fin.gravarBoletoTxt(x);
                 lista.Add (boleto);
             }
             return lista;
